@@ -8,7 +8,6 @@ sasl-default-path
 libldap-symbol-versions
 getaddrinfo-is-threadsafe
 do-not-second-guess-sonames
-contrib-modules-use-dpkg-buildflags
 smbk5pwd-makefile
 autogroup-makefile
 ldap-conf-tls-cacertdir
@@ -19,5 +18,4 @@ no-AM_INIT_AUTOMAKE
 switch-to-lt_dlopenadvise-to-get-RTLD_GLOBAL-set.diff
 no-bdb-ABI-second-guessing
 heimdal-fix
-bdb-deadlock.patch
 contribs.patch
