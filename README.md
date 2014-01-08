@@ -10,3 +10,9 @@ The upstream svn tags I have commited here can be found using:
 My own tags I'm using with
 
    git tag -l 'r*'
+
+The Debian GNU/Linux directory was (originaly) taken from the Debian GNU/Linux Wheezy package
+version 2.4.31-1+nmu2.
+
+It was however modified to compile against OpenSSL instead of GnuTLS. Which, by the way, sucks
+big hairy balls and should be illegal!
