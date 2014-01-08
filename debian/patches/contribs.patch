@@ -1,0 +1,97 @@
+Description: Update include paths in the build directory
+Author: Turbo Fredriksson <turbo@bayour.com>
+
+--- a/contrib/slapd-modules/addpartial/Makefile
++++ b/contrib/slapd-modules/addpartial/Makefile
+@@ -1,13 +1,22 @@
+ # $OpenLDAP$
++LIBTOOL=../../../debian/build/libtool
+ OPENLDAP_SRC=../../..
+ OPENLDAP_BLD=../../..
+-CPPFLAGS+=-I${OPENLDAP_SRC}/include -I${OPENLDAP_SRC}/servers/slapd -I${OPENLDAP_BLD}/include
++CPPFLAGS+=-I${OPENLDAP_SRC}/include -I${OPENLDAP_SRC}/servers/slapd -I${OPENLDAP_BLD}/include -I${OPENLDAP_SRC}/debian/build/include -I${OPENLDAP_SRC}/debian/build/servers/slapd
+ CC=gcc
+ 
+-all: addpartial-overlay.so
++all: addpartial-overlay.la
+ 
+-addpartial-overlay.so: addpartial-overlay.c
+-	$(CC) -shared $(CPPFLAGS) $(LDFLAGS) -Wall -o $@ $?
++addpartial-overlay.lo: addpartial-overlay.c
++	$(LIBTOOL) --mode=compile $(CC) $(CPPFLAGS) -Wall -c $?
++
++addpartial-overlay.la: addpartial-overlay.lo
++	$(LIBTOOL) --mode=link $(CC) -shared -Wall -version-info 0:0:0 \
++	-rpath /usr/lib/ldap -module -o $@ $? $(CPPFLAGS) $(LDFLAGS)
+ 
+ clean:
+-	rm addpartial-overlay.so
++	rm -Rf addpartial-overlay.lo addpartial-overlay.la .libs
++
++install: addpartial-overlay.la
++	mkdir -p $(DESTDIR)/usr/lib/ldap
++	$(LIBTOOL) --mode=install cp addpartial-overlay.la $(DESTDIR)/usr/lib/ldap
+--- a/contrib/slapd-modules/autogroup/Makefile
++++ b/contrib/slapd-modules/autogroup/Makefile
+@@ -1,6 +1,6 @@
+ LIBTOOL=../../../debian/build/libtool
+ 
+-CPPFLAGS+=-I../../../debian/build/include -I../../../include -I../../../servers/slapd
++CPPFLAGS+=-I../../../debian/build/include -I../../../debian/build/servers/slapd -I../../../include -I../../../servers/slapd
+ 
+ ldap_subdir = openldap
+ prefix=/usr/local
+--- a/contrib/slapd-modules/cloak/Makefile
++++ b/contrib/slapd-modules/cloak/Makefile
+@@ -1,8 +1,8 @@
+ # $OpenLDAP$
+-CPPFLAGS+=-I../../../include -I../../../servers/slapd 
++CPPFLAGS+=-I../../../include -I../../../servers/slapd -I../../../debian/build/include -I../../../debian/build/servers/slapd
+ CPPFLAGS+=-DSLAPD_OVER_CLOAK=SLAPD_MOD_DYNAMIC
+-LIBS=-lldap_r -llber -lcrypto
+-LIBTOOL=../../../libtool
++LIBS=-L../../../debian/build/libraries/libldap_r/.libs -L../../../debian/build/libraries/liblber/.libs -lldap_r -llber -lcrypto
++LIBTOOL=../../../debian/build/libtool
+ 
+ all: cloak.la
+ 
+--- a/contrib/slapd-modules/lastbind/Makefile
++++ b/contrib/slapd-modules/lastbind/Makefile
+@@ -10,10 +10,10 @@
+ # top-level directory of the distribution or, alternatively, at
+ # <http://www.OpenLDAP.org/license.html>.
+ 
+-CPPFLAGS+=-I../../../include -I../../../servers/slapd 
++CPPFLAGS+=-I../../../include -I../../../servers/slapd -I../../../debian/build/include -I../../../debian/build/servers/slapd
+ CPPFLAGS+=-DSLAPD_OVER_LASTBIND=SLAPD_MOD_DYNAMIC
+ #LIBTOOL=libtool
+-LIBTOOL=../../../libtool
++LIBTOOL=../../../debian/build/libtool
+ 
+ prefix=/usr/local
+ 
+--- a/contrib/slapd-modules/nssov/Makefile
++++ b/contrib/slapd-modules/nssov/Makefile
+@@ -13,11 +13,11 @@
+ # <http://www.OpenLDAP.org/license.html>.
+ 
+ # Path to the OpenLDAP source tree
+-LDAPSRC=../../..
++LDAPSRC=../../../
+ 
+ # Path to the OpenLDAP object tree - same as above unless
+ # you're doing out-of-tree builds.
+-LDAPOBJ=../../..
++LDAPOBJ=../../../debian/build
+ 
+ LIBTOOL=$(LDAPOBJ)/libtool
+ OPT=-g -O2
+@@ -27,7 +27,7 @@
+ NLDAPD_INC=-Inss-pam-ldapd
+ INCS=$(LDAP_INC) $(NLDAPD_INC)
+ 
+-LDAP_LIB=-lldap_r -llber
++LDAP_LIB=-L../../../debian/build/libraries/libldap_r/.libs -L../../../debian/build/libraries/liblber/.libs -lldap_r -llber
+ LIBS=$(LDAP_LIB)
+ 
+ prefix=/usr/local
