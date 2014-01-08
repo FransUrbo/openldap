@@ -78,19 +78,25 @@ override_dh_auto_configure:
 
 override_dh_auto_build:
 	dh_auto_build -- $(MAKEVARS)
-	$(MAKE) -C contrib/slapd-modules/smbk5pwd
-	$(MAKE) -C contrib/slapd-modules/autogroup
+
+        # acl passwd
+	for mod in addpartial autogroup cloak lastbind nssov; do \
+		$(MAKE) -C $(CURDIR)/contrib/slapd-modules/$$mod; \
+	done
 
 override_dh_auto_install:
 	dh_auto_install -- $(MAKEVARS)
-	$(MAKE) -C contrib/slapd-modules/smbk5pwd install DESTDIR=$(installdir)
-	$(MAKE) -C contrib/slapd-modules/autogroup install DESTDIR=$(installdir)
+
+        # acl passwd
+	for mod in addpartial autogroup cloak lastbind nssov; do \
+		$(MAKE) -C $(CURDIR)/contrib/slapd-modules/$$mod install DESTDIR=$(installdir); \
+	done
 
 	# Empty the dependency_libs file in the .la files.
 	for F in $(installdir)/usr/lib/ldap/*.la; do \
 		sed -i "s/^dependency_libs=.*/dependency_libs=''/" $$F; \
 	done
-	
+
 	# Check all built libraries for unresolved symbols except for the
 	# libslapi library.  It is a special case since the SLAPI interface
 	# depends on symbols defined in slapd itself.  Those symbols will
@@ -164,11 +170,7 @@ override_dh_auto_clean:
 	fi
 
 	# Clean the contrib directory
-	rm -rf contrib/slapd-modules/smbk5pwd/.libs \
-		contrib/slapd-modules/smbk5pwd/smbk5pwd.lo \
-		contrib/slapd-modules/smbk5pwd/smbk5pwd.la \
-		contrib/slapd-modules/smbk5pwd/smbk5pwd.o
-	rm -rf contrib/slapd-modules/autogroup/.libs \
-		contrib/slapd-modules/autogroup/autogroup.lo \
-		contrib/slapd-modules/autogroup/autogroup.la \
-		contrib/slapd-modules/autogroup/autogroup.o
+	rm -rf contrib/slapd-modules/*/.libs \
+		contrib/slapd-modules/*/*.lo \
+		contrib/slapd-modules/*/*.la \
+		contrib/slapd-modules/*/*.o
