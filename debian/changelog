@@ -1,3 +1,9 @@
+openldap (2.4.38) unstable; urgency=high
+
+  * New GIT release - 2.4.38.
+
+ -- Turbo Fredriksson <turbo@bayour.com>  Wed, 08 Jan 2014 21:38:46 +0100
+
 openldap (2.4.31-1+nmu2) unstable; urgency=high
 
   * Non-maintainer upload.
