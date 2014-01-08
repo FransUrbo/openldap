@@ -1,7 +1,7 @@
 /* $OpenLDAP$ */
 /* This work is part of OpenLDAP Software <http://www.openldap.org/>.
  *
- * Copyright 1998-2012 The OpenLDAP Foundation.
+ * Copyright 1998-2013 The OpenLDAP Foundation.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -582,7 +582,7 @@ ldapava_new( const struct berval *attr, const struct berval *val,
 	return( ava );
 }
 
-void
+static void
 ldapava_free( LDAPAVA *ava, void *ctx )
 {
 	assert( ava != NULL );
