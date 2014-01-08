@@ -2,7 +2,7 @@
 /* $OpenLDAP$ */
 /* This work is part of OpenLDAP Software <http://www.openldap.org/>.
  *
- * Copyright 2003-2012 The OpenLDAP Foundation.
+ * Copyright 2003-2013 The OpenLDAP Foundation.
  * Portions Copyright 2003 Pierangelo Masarati.
  * All rights reserved.
  *
@@ -107,10 +107,12 @@ rwm_op_rollback( Operation *op, SlapReply *rs, rwm_op_state *ros )
 		break;
 	case LDAP_REQ_MODRDN:
 		if ( op->orr_newSup != ros->orr_newSup ) {
-			ch_free( op->orr_newSup->bv_val );
-			ch_free( op->orr_nnewSup->bv_val );
-			op->o_tmpfree( op->orr_newSup, op->o_tmpmemctx );
-			op->o_tmpfree( op->orr_nnewSup, op->o_tmpmemctx );
+			if ( op->orr_newSup ) {
+				ch_free( op->orr_newSup->bv_val );
+				ch_free( op->orr_nnewSup->bv_val );
+				op->o_tmpfree( op->orr_newSup, op->o_tmpmemctx );
+				op->o_tmpfree( op->orr_nnewSup, op->o_tmpmemctx );
+			}
 			op->orr_newSup = ros->orr_newSup;
 			op->orr_nnewSup = ros->orr_nnewSup;
 		}
