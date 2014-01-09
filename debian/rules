@@ -53,7 +53,7 @@ override_dh_auto_build:
 	dh_auto_build -- $(MAKEVARS)
 
         # acl passwd
-	for mod in addpartial autogroup cloak lastbind nssov; do \
+	for mod in addpartial autogroup cloak lastbind nssov smbk5pwd; do \
 		$(MAKE) -C $(CURDIR)/contrib/slapd-modules/$$mod; \
 	done
 
@@ -61,7 +61,7 @@ override_dh_auto_install:
 	dh_auto_install -- $(MAKEVARS)
 
         # acl passwd
-	for mod in addpartial autogroup cloak lastbind nssov; do \
+	for mod in addpartial autogroup cloak lastbind nssov smbk5pwd; do \
 		$(MAKE) -C $(CURDIR)/contrib/slapd-modules/$$mod install DESTDIR=$(installdir); \
 	done
 
