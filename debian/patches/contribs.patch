@@ -12,6 +12,23 @@ Author: Turbo Fredriksson <turbo@bayour.com>
  LDAP_INC = -I$(LDAP_BUILD)/include -I$(LDAP_SRC)/include -I$(LDAP_SRC)/servers/slapd
  LDAP_LIB = $(LDAP_BUILD)/libraries/libldap_r/libldap_r.la \
  	$(LDAP_BUILD)/libraries/liblber/liblber.la
+@@ -16,13 +16,13 @@
+ PROGRAMS = addpartial.la
+ LTVER = 0:0:0
+ 
+-prefix=/usr/local
++prefix=/usr
+ exec_prefix=$(prefix)
+-ldap_subdir=/openldap
++ldap_subdir=/ldap
+ 
+ libdir=$(exec_prefix)/lib
+ libexecdir=$(exec_prefix)/libexec
+-moduledir = $(libexecdir)$(ldap_subdir)
++moduledir = $(libdir)$(ldap_subdir)
+ 
+ .SUFFIXES: .c .o .lo
+ 
 --- a/contrib/slapd-modules/cloak/Makefile
 +++ b/contrib/slapd-modules/cloak/Makefile
 @@ -1,7 +1,7 @@
@@ -23,6 +40,23 @@ Author: Turbo Fredriksson <turbo@bayour.com>
  LDAP_INC = -I$(LDAP_BUILD)/include -I$(LDAP_SRC)/include -I$(LDAP_SRC)/servers/slapd
  LDAP_LIB = $(LDAP_BUILD)/libraries/libldap_r/libldap_r.la \
  	$(LDAP_BUILD)/libraries/liblber/liblber.la
+@@ -16,13 +16,13 @@
+ PROGRAMS = cloak.la
+ LTVER = 0:0:0
+ 
+-prefix=/usr/local
++prefix=/usr
+ exec_prefix=$(prefix)
+-ldap_subdir=/openldap
++ldap_subdir=/ldap
+ 
+ libdir=$(exec_prefix)/lib
+ libexecdir=$(exec_prefix)/libexec
+-moduledir = $(libexecdir)$(ldap_subdir)
++moduledir = $(libdir)$(ldap_subdir)
+ 
+ .SUFFIXES: .c .o .lo
+ 
 --- a/contrib/slapd-modules/lastbind/Makefile
 +++ b/contrib/slapd-modules/lastbind/Makefile
 @@ -11,7 +11,7 @@
@@ -34,6 +68,23 @@ Author: Turbo Fredriksson <turbo@bayour.com>
  LDAP_INC = -I$(LDAP_BUILD)/include -I$(LDAP_SRC)/include -I$(LDAP_SRC)/servers/slapd
  LDAP_LIB = $(LDAP_BUILD)/libraries/libldap_r/libldap_r.la \
  	$(LDAP_BUILD)/libraries/liblber/liblber.la
+@@ -26,13 +26,13 @@
+ PROGRAMS = lastbind.la
+ LTVER = 0:0:0
+ 
+-prefix=/usr/local
++prefix=/usr
+ exec_prefix=$(prefix)
+-ldap_subdir=/openldap
++ldap_subdir=/ldap
+ 
+ libdir=$(exec_prefix)/lib
+ libexecdir=$(exec_prefix)/libexec
+-moduledir = $(libexecdir)$(ldap_subdir)
++moduledir = $(libdir)$(ldap_subdir)
+ 
+ .SUFFIXES: .c .o .lo
+ 
 --- a/contrib/slapd-modules/nssov/Makefile
 +++ b/contrib/slapd-modules/nssov/Makefile
 @@ -17,7 +17,7 @@
@@ -45,3 +96,41 @@ Author: Turbo Fredriksson <turbo@bayour.com>
  
  LDAP_INC = -I$(LDAP_BUILD)/include -I$(LDAP_SRC)/include -I$(LDAP_SRC)/servers/slapd
  LDAP_LIB = $(LDAP_BUILD)/libraries/libldap_r/libldap_r.la \
+@@ -32,13 +32,14 @@
+ INCS = $(LDAP_INC) $(NLDAPD_INC)
+ LIBS = $(LDAP_LIB)
+ 
+-prefix=/usr/local
++PROGRAMS = nssov.la
++prefix=/usr
+ exec_prefix=$(prefix)
+-ldap_subdir=/openldap
++ldap_subdir=/ldap
+ 
+ libdir=$(exec_prefix)/lib
+ libexecdir=$(exec_prefix)/libexec
+-moduledir = $(libexecdir)$(ldap_subdir)
++moduledir = $(libdir)$(ldap_subdir)
+ sysconfdir = $(prefix)/etc$(ldap_subdir)
+ schemadir = $(sysconfdir)/schema
+ 
+@@ -61,12 +62,15 @@
+ 
+ nssov.la:	$(OBJS) $(XOBJS)
+ 	$(LIBTOOL) --mode=link $(CC) $(OPT) -version-info 0:0:0 \
+-	-rpath $(libdir) -module -o $@ $(OBJS) $(XOBJS) $(LIBS)
++	-rpath $(moduledir) -module -o $@ $(OBJS) $(XOBJS) $(LIBS)
+ 
+-install: nssov.la
++install: $(PROGRAMS)
+ 	mkdir -p $(DESTDIR)$(moduledir)
+-	$(LIBTOOL) --mode=install cp nssov.la $(DESTDIR)$(moduledir)
+-	cp ldapns.schema $(DESTDIR)$(schemadir)
++	for p in $(PROGRAMS); do \
++		$(LIBTOOL) --mode=install cp $$p $(DESTDIR)$(moduledir); \
++	done
++	mkdir -p $(DESTDIR)$(schemadir)
++	cp ldapns.schema 
+ 
+ clean:
+ 	rm -f *.*o *.la .libs/*
