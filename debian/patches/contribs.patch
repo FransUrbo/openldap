@@ -114,7 +114,7 @@ Author: Turbo Fredriksson <turbo@bayour.com>
  sysconfdir = $(prefix)/etc$(ldap_subdir)
  schemadir = $(sysconfdir)/schema
  
-@@ -61,12 +62,15 @@
+@@ -61,11 +62,14 @@
  
  nssov.la:	$(OBJS) $(XOBJS)
  	$(LIBTOOL) --mode=link $(CC) $(OPT) -version-info 0:0:0 \
@@ -125,12 +125,10 @@ Author: Turbo Fredriksson <turbo@bayour.com>
 +install: $(PROGRAMS)
  	mkdir -p $(DESTDIR)$(moduledir)
 -	$(LIBTOOL) --mode=install cp nssov.la $(DESTDIR)$(moduledir)
--	cp ldapns.schema $(DESTDIR)$(schemadir)
 +	for p in $(PROGRAMS); do \
 +		$(LIBTOOL) --mode=install cp $$p $(DESTDIR)$(moduledir); \
 +	done
 +	mkdir -p $(DESTDIR)$(schemadir)
-+	cp ldapns.schema 
+ 	cp ldapns.schema $(DESTDIR)$(schemadir)
  
  clean:
- 	rm -f *.*o *.la .libs/*
