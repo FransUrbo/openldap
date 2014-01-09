@@ -1,0 +1,67 @@
+--- a/build/top.mk
++++ b/build/top.mk
+@@ -19,7 +19,6 @@
+ VERSION= @VERSION@
+ RELEASEDATE= @OPENLDAP_RELEASE_DATE@
+ 
+-@SET_MAKE@
+ SHELL = @SHELL@
+ 
+ top_builddir = @top_builddir@
+--- a/contrib/ldapc++/Makefile.in
++++ b/contrib/ldapc++/Makefile.in
+@@ -12,8 +12,6 @@
+ # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ # PARTICULAR PURPOSE.
+ 
+-@SET_MAKE@
+-
+ # $OpenLDAP$
+ 
+ # Copyright 2000-2013 The OpenLDAP Foundation. All Rights Reserved.
+@@ -128,7 +126,6 @@
+ PATH_SEPARATOR = @PATH_SEPARATOR@
+ RANLIB = @RANLIB@
+ SED = @SED@
+-SET_MAKE = @SET_MAKE@
+ SHELL = @SHELL@
+ STRIP = @STRIP@
+ VERSION = @VERSION@
+--- a/contrib/ldapc++/examples/Makefile.in
++++ b/contrib/ldapc++/examples/Makefile.in
+@@ -13,8 +13,6 @@
+ # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ # PARTICULAR PURPOSE.
+ 
+-@SET_MAKE@
+-
+ # $OpenLDAP$
+ 
+ VPATH = @srcdir@
+@@ -140,7 +138,6 @@
+ PATH_SEPARATOR = @PATH_SEPARATOR@
+ RANLIB = @RANLIB@
+ SED = @SED@
+-SET_MAKE = @SET_MAKE@
+ SHELL = @SHELL@
+ STRIP = @STRIP@
+ VERSION = @VERSION@
+--- a/contrib/ldapc++/src/Makefile.in
++++ b/contrib/ldapc++/src/Makefile.in
+@@ -13,8 +13,6 @@
+ # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ # PARTICULAR PURPOSE.
+ 
+-@SET_MAKE@
+-
+ # $OpenLDAP$
+ 
+ ###
+@@ -174,7 +172,6 @@
+ PATH_SEPARATOR = @PATH_SEPARATOR@
+ RANLIB = @RANLIB@
+ SED = @SED@
+-SET_MAKE = @SET_MAKE@
+ SHELL = @SHELL@
+ STRIP = @STRIP@
+ VERSION = @VERSION@
